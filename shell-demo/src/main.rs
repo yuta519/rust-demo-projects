@@ -7,5 +7,5 @@ fn main() {
     stdin
         .read_line(&mut buffer)
         .expect("Input error: read_line()");
-    println!("Your input is {}", buffer);
+    println!("Your input is `{}`", buffer);
 }
