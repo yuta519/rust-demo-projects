@@ -26,8 +26,6 @@ fn handle_connection(mut stream: TcpStream) {
 
     stream.write(response.as_bytes()).unwrap();
     stream.flush().unwrap();
-
-    println!("Request: {}", String::from_utf8_lossy(&buffer[..]));
 }
 
 // Please execute `curl localhost:8080`
