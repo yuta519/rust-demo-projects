@@ -6,9 +6,8 @@ fn main() {
     println!("This is a stdin test! Guess the number.");
     println!("Please input your guessed number.");
 
-    let secret_number = rand::thread_rng().gen_range(1, 101);
-
     loop {
+        let secret_number = rand::thread_rng().gen_range(1, 101);
         let mut buffer = String::new();
         let stdin = io::stdin();
         stdin
@@ -23,7 +22,10 @@ fn main() {
         match guess.cmp(&secret_number) {
             Ordering::Less => println!("Too small!!"),
             Ordering::Greater => println!("Too big"),
-            Ordering::Equal => println!("You win!"),
+            Ordering::Equal => {
+                println!("You win!");
+                break;
+            }
         }
     }
 }
