@@ -7,9 +7,9 @@ fn main() {
     println!("Please input your guessed number.");
 
     let secret_number = rand::thread_rng().gen_range(1, 101);
-    let mut buffer = String::new();
 
     loop {
+        let mut buffer = String::new();
         let stdin = io::stdin();
         stdin
             .read_line(&mut buffer)
