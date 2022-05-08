@@ -9,11 +9,10 @@ There are two demo projects
 
 ## How to execute
 - move each project directory
+```
+cd <project dir>
+```
 - run below command
 ```
-   cargo run
-
-   or
-
-   cargo run bin <filename>
+   cargo run --bin <project name>
 ```
