@@ -36,7 +36,6 @@ wasm-pack build --release --target web --out-name mod
 ### 🔬 Try to use with `deno`
 
 ```bash
-~/m/r/hello-wasm ||HEAD⚡?
 $ deno
 Deno 1.20.3
 exit using ctrl+d or close()
@@ -48,4 +47,8 @@ undefined
 Hello, hello-wasm! [Enter]
 undefined
 >
+```
+
+```bash
+deno eval "(await import('./pkg/mod.js')).default().then((m) => console.log(m.add(1,2)))"
 ```
