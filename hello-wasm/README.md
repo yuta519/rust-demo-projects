@@ -1,20 +1,8 @@
 <div align="center">
 
-  <h1><code>wasm-pack-template</code></h1>
+  <h1><code>wasm-demo</code></h1>
 
-  <strong>A template for kick starting a Rust and WebAssembly project using <a href="https://github.com/rustwasm/wasm-pack">wasm-pack</a>.</strong>
-
-  <p>
-    <a href="https://travis-ci.org/rustwasm/wasm-pack-template"><img src="https://img.shields.io/travis/rustwasm/wasm-pack-template.svg?style=flat-square" alt="Build Status" /></a>
-  </p>
-
-  <h3>
-    <a href="https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html">Tutorial</a>
-    <span> | </span>
-    <a href="https://discordapp.com/channels/442252698964721669/443151097398296587">Chat</a>
-  </h3>
-
-  <sub>Built with 🦀🕸 by <a href="https://rustwasm.github.io/">The Rust and WebAssembly Working Group</a></sub>
+  <strong>Using Rust <a href="https://github.com/rustwasm/wasm-pack">wasm-pack</a> as demo.</strong>
 </div>
 
 ## About
@@ -34,36 +22,30 @@ templates and usages of `wasm-pack`.
 
 ### 🐑 Use `cargo generate` to Clone this Template
 
-[Learn more about `cargo generate` here.](https://github.com/ashleygwilliams/cargo-generate)
-
-```
+```bash
 cargo generate --git https://github.com/rustwasm/wasm-pack-template.git --name my-project
 cd my-project
 ```
 
 ### 🛠️ Build with `wasm-pack build`
 
-```
-wasm-pack build
-```
-
-### 🔬 Test in Headless Browsers with `wasm-pack test`
-
-```
-wasm-pack test --headless --firefox
+```bash
+wasm-pack build --release --target web --out-name mod
 ```
 
-### 🎁 Publish to NPM with `wasm-pack publish`
+### 🔬 Try to use with `deno`
 
+```bash
+~/m/r/hello-wasm ||HEAD⚡?
+$ deno
+Deno 1.20.3
+exit using ctrl+d or close()
+> const mod = await import('./pkg/mod.js');
+undefined
+> await mod.default();
+{ memory: WebAssembly.Memory {}, greet: [Function: 1] }
+> mod.greet();
+Hello, hello-wasm! [Enter]
+undefined
+>
 ```
-wasm-pack publish
-```
-
-## 🔋 Batteries Included
-
-* [`wasm-bindgen`](https://github.com/rustwasm/wasm-bindgen) for communicating
-  between WebAssembly and JavaScript.
-* [`console_error_panic_hook`](https://github.com/rustwasm/console_error_panic_hook)
-  for logging panic messages to the developer console.
-* [`wee_alloc`](https://github.com/rustwasm/wee_alloc), an allocator optimized
-  for small code size.
