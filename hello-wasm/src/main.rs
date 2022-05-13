@@ -1,4 +1,4 @@
 fn main() {
     hello_wasm::greet();
-    // hello_wasm::greet_name("yuta519");
+    hello_wasm::bare_bones();
 }

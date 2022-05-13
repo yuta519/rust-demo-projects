@@ -32,6 +32,12 @@ export function add(a, b) {
     return ret;
 }
 
+/**
+*/
+export function bare_bones() {
+    wasm.bare_bones();
+}
+
 async function load(module, imports) {
     if (typeof Response === 'function' && module instanceof Response) {
         if (typeof WebAssembly.instantiateStreaming === 'function') {
@@ -65,12 +71,21 @@ async function load(module, imports) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('hello-wasm-8ee4b82af6d00dfe_bg.wasm', import.meta.url);
+        input = new URL('hello-wasm-6587874458256fdd_bg.wasm', import.meta.url);
     }
     const imports = {};
     imports.wbg = {};
     imports.wbg.__wbg_alert_a5a2f68cc09adc6e = function(arg0, arg1) {
         alert(getStringFromWasm0(arg0, arg1));
+    };
+    imports.wbg.__wbg_log_ce93870e50a20a29 = function(arg0, arg1) {
+        console.log(getStringFromWasm0(arg0, arg1));
+    };
+    imports.wbg.__wbg_log_cbaaffd92896fa12 = function(arg0) {
+        console.log(arg0 >>> 0);
+    };
+    imports.wbg.__wbg_log_c03538d5b5e1f548 = function(arg0, arg1, arg2, arg3) {
+        console.log(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
     };
 
     if (typeof input === 'string' || (typeof Request === 'function' && input instanceof Request) || (typeof URL === 'function' && input instanceof URL)) {
