@@ -22,3 +22,9 @@ pub fn greet() {
 pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
+
+// #[wasm_bindgen]
+// pub fn greet_name(name: &str) {
+//     let message: str = String::from("Hello ") + name;
+//     alert(message)
+// }

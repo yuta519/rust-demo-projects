@@ -49,6 +49,11 @@ undefined
 >
 ```
 
+### 🔬 Try to use with `trunk`
+```bash
+trunk serve
+```
+
 ```bash
 deno eval "(await import('./pkg/mod.js')).default().then((m) => console.log(m.add(1,2)))"
 ```
