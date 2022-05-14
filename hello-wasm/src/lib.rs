@@ -29,6 +29,13 @@ extern "C" {
     fn log_many(a: &str, b: &str);
 }
 
+macro_rules! console_log {
+    ($($t:tt)*) => (log(&format_args!($($t)*).to_string()))
+}
+
+/**
+ Define public functions
+**/
 #[wasm_bindgen]
 pub fn greet() {
     alert("Hello, hello-wasm!");
@@ -44,10 +51,5 @@ pub fn bare_bones() {
     log("Hello from Rust!");
     log_u32(42);
     log_many("Logging", "many values!");
+    console_log!("hoge")
 }
-
-// #[wasm_bindgen]
-// pub fn greet_name(name: &str) {
-//     let message: str = String::from("Hello ") + name;
-//     alert(message)
-// }

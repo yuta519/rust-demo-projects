@@ -17,6 +17,9 @@ function getStringFromWasm0(ptr, len) {
     return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
 }
 /**
+*
+* Define public functions
+**
 */
 export function greet() {
     wasm.greet();
@@ -71,7 +74,7 @@ async function load(module, imports) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('hello-wasm-6587874458256fdd_bg.wasm', import.meta.url);
+        input = new URL('hello-wasm-93da26bfaca64be5_bg.wasm', import.meta.url);
     }
     const imports = {};
     imports.wbg = {};
