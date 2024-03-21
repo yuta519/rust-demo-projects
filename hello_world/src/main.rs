@@ -6,4 +6,10 @@ fn main() {
     for _i in 0..10 {
         println!("Hello, world! {}", foo);
     }
+
+    // Using `Result` type
+    let some: Result<&str, &str> = Ok("Hello, world!");
+    println!("{:?}", some);
+    let err: Result<&str, &str> = Err("Hello, world!");
+    print!("{:?} ", err);
 }
