@@ -1,5 +1,8 @@
-mod result_type;
-use result_type::fail;
+mod fizbuzz;
+use fizbuzz::fizbuzz;
+
+// mod result_type;
+// use result_type::fail;
 
 fn main() {
     // When you run the command `cargo clippy`, you will get the following warning:
@@ -18,9 +21,15 @@ fn main() {
     // result_type::main();
 
     // Tryp optionals
-    let message: String = match fail() {
-        Ok(_) => "Success".to_string(),
-        Err(err) => err,
-    };
-    println!("{}", message);
+    // let message: String = match fail() {
+    //     Ok(_) => "Success".to_string(),
+    //     Err(err) => err,
+    // };
+    // println!("{}", message);
+
+    // FizzBuzz
+    println!("{}", fizbuzz(15));
+    println!("{}", fizbuzz(10));
+    println!("{}", fizbuzz(9));
+    println!("{}", fizbuzz(1));
 }
