@@ -8,6 +8,7 @@
 // use loop_func::add_until;
 
 mod for_loop;
+mod using_struct;
 
 mod while_loop;
 use while_loop::add_until;
@@ -44,6 +45,9 @@ fn main() {
     // println!("{}", fizbuzz(9));
     // println!("{}", fizbuzz(1));
     // println!("{:?}", color_name_to_jp("red"));
+
+    // // Using struct
+    using_struct::main();
 
     // Loop
     for_loop::for_loop();
