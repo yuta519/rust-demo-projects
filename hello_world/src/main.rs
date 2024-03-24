@@ -4,6 +4,9 @@ use fizbuzz::fizbuzz;
 mod color_token;
 use color_token::color_name_to_jp;
 
+mod loop_func;
+use loop_func::add_until;
+
 // mod result_type;
 // use result_type::fail;
 
@@ -35,6 +38,9 @@ fn main() {
     println!("{}", fizbuzz(10));
     println!("{}", fizbuzz(9));
     println!("{}", fizbuzz(1));
-
     println!("{:?}", color_name_to_jp("red"));
+
+    // Loop
+    let sum = add_until(1, 100);
+    println!("{}", sum)
 }
