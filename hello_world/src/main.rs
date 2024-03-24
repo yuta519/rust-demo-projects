@@ -7,6 +7,8 @@
 // mod loop_func;
 // use loop_func::add_until;
 
+mod for_loop;
+
 mod while_loop;
 use while_loop::add_until;
 
@@ -44,6 +46,8 @@ fn main() {
     // println!("{:?}", color_name_to_jp("red"));
 
     // Loop
+    for_loop::for_loop();
+
     let sum = add_until(1, 100);
     println!("{}", sum)
 }
