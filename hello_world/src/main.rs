@@ -1,6 +1,7 @@
-mod user;
+mod square;
+use square::Area;
 
 fn main() {
-    let user = user::User::new("Alice".to_string(), 30);
-    print!("{}", user)
+    let squarere = square::Square::new(10);
+    print!("{}", squarere.area());
 }
