@@ -16,12 +16,15 @@ impl Square {
     pub fn new(side: u32) -> Self {
         Self { side }
     }
-    // pub fn area(&self) -> u32 {
-    //     self.side.pow(2)
-    // }
 }
 
-// fn main() {
-//     let squarere = Square::new(10);
-//     print!("{}", squarere.area());
-// }
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_area() {
+        let square = Square::new(10);
+        assert_eq!(square.area(), 100);
+    }
+}
