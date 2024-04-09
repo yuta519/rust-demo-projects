@@ -13,14 +13,18 @@ async fn main() {
     env::set_var("RUST_LOG", &log_level);
     tracing_subscriber::fmt::init();
 
-    let app = Router::new()
-        .route("/", get(root))
-        .route("/users", post(create_user));
+    let app = create_app();
     let address = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
 
     tracing::debug!("Listening on: {}", address.local_addr().unwrap());
 
     axum::serve(address, app).await.unwrap();
+}
+
+fn create_app() -> Router {
+    Router::new()
+        .route("/", get(root))
+        .route("/users", post(create_user))
 }
 
 async fn root() -> &'static str {
