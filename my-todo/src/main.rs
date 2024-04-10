@@ -50,3 +50,30 @@ struct User {
     id: u64,
     name: String,
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use axum::{
+        body::Body,
+        // http::{header, Method, Request},
+        http::{Method, Request},
+    };
+    use tower::ServiceExt;
+
+    #[tokio::test]
+    async fn should_return_hello_world() {
+        let req = Request::builder()
+            .method(Method::GET)
+            .uri("/")
+            .body(Body::empty())
+            .unwrap();
+
+        let res = create_app().oneshot(req).await.unwrap();
+        let bytes = axum::body::to_bytes(res.into_body(), usize::MAX)
+            .await
+            .unwrap();
+        let body = String::from_utf8(bytes.to_vec()).unwrap();
+        assert_eq!(body, "Hello, World!");
+    }
+}
