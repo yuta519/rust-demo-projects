@@ -6,6 +6,13 @@ use axum::{
 };
 use serde::{Deserialize, Serialize};
 use std::env;
+use thiserror::Error;
+
+#[derive(Debug, Error)]
+enum RepositoryError {
+    #[error("User not found: {0}")]
+    NotFound(i32),
+}
 
 #[tokio::main]
 async fn main() {
