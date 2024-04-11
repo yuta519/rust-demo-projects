@@ -40,7 +40,7 @@ async fn create_user(Json(payload): Json<CreateUszer>) -> impl IntoResponse {
     (StatusCode::CREATED, Json(user))
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
 struct CreateUszer {
     name: String,
 }
