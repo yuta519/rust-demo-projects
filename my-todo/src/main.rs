@@ -14,6 +14,14 @@ enum RepositoryError {
     NotFound(i32),
 }
 
+pub trait TodoRepository: Clone + std::marker::Send + std::marker::Sync + 'static {
+    fn create(&self, todo: bool) -> Result<bool, RepositoryError>;
+    fn find(&self, id: i32) -> Result<bool, RepositoryError>;
+    fn all(&self, todo: bool) -> Result<bool, RepositoryError>;
+    fn update(&self, id: i32) -> Result<bool, RepositoryError>;
+    fn delete(&self, id: i32) -> Result<bool, RepositoryError>;
+}
+
 #[tokio::main]
 async fn main() {
     let log_level = env::var("RUST_LOG").unwrap_or_else(|_| "info".to_string());
