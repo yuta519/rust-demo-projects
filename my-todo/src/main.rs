@@ -15,11 +15,18 @@ enum RepositoryError {
 }
 
 pub trait TodoRepository: Clone + std::marker::Send + std::marker::Sync + 'static {
-    fn create(&self, todo: bool) -> Result<bool, RepositoryError>;
-    fn find(&self, id: i32) -> Result<bool, RepositoryError>;
-    fn all(&self, todo: bool) -> Result<bool, RepositoryError>;
-    fn update(&self, id: i32) -> Result<bool, RepositoryError>;
-    fn delete(&self, id: i32) -> Result<bool, RepositoryError>;
+    fn create(&self, todo: ToDo) -> Result<ToDo, RepositoryError>;
+    fn find(&self, id: i32) -> Result<ToDo, RepositoryError>;
+    fn all(&self, todo: ToDo) -> Result<ToDo, RepositoryError>;
+    fn update(&self, id: i32) -> Result<ToDo, RepositoryError>;
+    fn delete(&self, id: i32) -> Result<ToDo, RepositoryError>;
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct ToDo {
+    id: i32,
+    text: String,
+    completed: bool,
 }
 
 #[tokio::main]
