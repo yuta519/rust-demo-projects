@@ -29,6 +29,27 @@ pub struct ToDo {
     completed: bool,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct CreateTodo {
+    text: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct UpdateTodo {
+    text: Option<String>,
+    completed: Option<bool>,
+}
+
+impl ToDo {
+    pub fn new(id: i32, text: String) -> Self {
+        Self {
+            id,
+            text,
+            completed: false,
+        }
+    }
+}
+
 #[tokio::main]
 async fn main() {
     let log_level = env::var("RUST_LOG").unwrap_or_else(|_| "info".to_string());
