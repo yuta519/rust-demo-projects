@@ -15,11 +15,11 @@ enum RepositoryError {
 }
 
 pub trait TodoRepository: Clone + std::marker::Send + std::marker::Sync + 'static {
-    fn create(&self, todo: ToDo) -> Result<ToDo, RepositoryError>;
-    fn find(&self, id: i32) -> Result<ToDo, RepositoryError>;
-    fn all(&self, todo: ToDo) -> Result<ToDo, RepositoryError>;
-    fn update(&self, id: i32) -> Result<ToDo, RepositoryError>;
-    fn delete(&self, id: i32) -> Result<ToDo, RepositoryError>;
+    fn create(&self, todo: ToDo) -> ToDo;
+    fn find(&self, id: i32) -> Option<ToDo>;
+    fn all(&self, todo: ToDo) -> Vec<ToDo>;
+    fn update(&self, id: i32) -> anyhow::Result<ToDo>;
+    fn delete(&self, id: i32) -> anyhow::Result<()>;
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
