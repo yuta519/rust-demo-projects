@@ -5,7 +5,11 @@ use axum::{
     Json, Router,
 };
 use serde::{Deserialize, Serialize};
-use std::env;
+use std::{
+    collections::HashMap,
+    env,
+    sync::{Arc, RwLock},
+};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -47,6 +51,36 @@ impl ToDo {
             text,
             completed: false,
         }
+    }
+}
+
+type ToDoDataset = HashMap<i32, ToDo>;
+
+#[derive(Debug, Clone)]
+
+pub struct InMemoryTodoRepository {
+    store: Arc<RwLock<ToDoDataset>>,
+}
+
+impl TodoRepository for InMemoryTodoRepository {
+    fn all(&self, todo: ToDo) -> Vec<ToDo> {
+        todo!()
+    }
+
+    fn create(&self, todo: ToDo) -> ToDo {
+        todo!()
+    }
+
+    fn delete(&self, id: i32) -> anyhow::Result<()> {
+        todo!()
+    }
+
+    fn find(&self, id: i32) -> Option<ToDo> {
+        todo!()
+    }
+
+    fn update(&self, id: i32) -> anyhow::Result<ToDo> {
+        todo!()
     }
 }
 
