@@ -66,19 +66,15 @@ impl TodoRepository for InMemoryTodoRepository {
     fn all(&self, todo: ToDo) -> Vec<ToDo> {
         todo!()
     }
-
     fn create(&self, todo: ToDo) -> ToDo {
         todo!()
     }
-
     fn delete(&self, id: i32) -> anyhow::Result<()> {
         todo!()
     }
-
     fn find(&self, id: i32) -> Option<ToDo> {
         todo!()
     }
-
     fn update(&self, id: i32) -> anyhow::Result<ToDo> {
         todo!()
     }
