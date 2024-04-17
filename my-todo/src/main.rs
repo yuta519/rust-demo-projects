@@ -20,7 +20,7 @@ enum RepositoryError {
 }
 
 pub trait TodoRepository: Clone + std::marker::Send + std::marker::Sync + 'static {
-    fn create(&self, todo: ToDo) -> ToDo;
+    fn create(&self, payload: CreateTodo) -> ToDo;
     fn find(&self, id: i32) -> Option<ToDo>;
     fn all(&self, todo: ToDo) -> Vec<ToDo>;
     fn update(&self, id: i32) -> anyhow::Result<ToDo>;
@@ -63,11 +63,19 @@ pub struct InMemoryTodoRepository {
     store: Arc<RwLock<ToDoDataset>>,
 }
 
+impl InMemoryTodoRepository {
+    pub fn new() -> Self {
+        InMemoryTodoRepository {
+            store: Arc::new(RwLock::new(HashMap::new())),
+        }
+    }
+}
+
 impl TodoRepository for InMemoryTodoRepository {
     fn all(&self, todo: ToDo) -> Vec<ToDo> {
         todo!()
     }
-    fn create(&self, todo: ToDo) -> ToDo {
+    fn create(&self, payload: CreateTodo) -> ToDo {
         todo!()
     }
     fn delete(&self, id: i32) -> anyhow::Result<()> {
@@ -87,7 +95,8 @@ async fn main() {
     env::set_var("RUST_LOG", &log_level);
     tracing_subscriber::fmt::init();
 
-    let app = create_app();
+    let repository = InMemoryTodoRepository::new();
+    let app = create_app(repository);
     let address = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
 
     tracing::debug!("Listening on: {}", address.local_addr().unwrap());
@@ -95,17 +104,19 @@ async fn main() {
     axum::serve(address, app).await.unwrap();
 }
 
-fn create_app() -> Router {
+fn create_app<T: TodoRepository>(repository: T) -> Router {
     Router::new()
         .route("/", get(root))
         .route("/users", post(create_user))
+        // .route("/todos", post(create_todo::<T>))
+        .layer(Extension(Arc::new(repository)))
 }
 
 async fn root() -> &'static str {
     "Hello, World!"
 }
 
-async fn create_user(Json(payload): Json<CreateUszer>) -> impl IntoResponse {
+async fn create_user(Json(payload): Json<CreateUser>) -> impl IntoResponse {
     let user = User {
         id: 1337,
         name: payload.name,
@@ -114,8 +125,17 @@ async fn create_user(Json(payload): Json<CreateUszer>) -> impl IntoResponse {
     (StatusCode::CREATED, Json(user))
 }
 
+async fn create_todo<T: TodoRepository>(
+    Json(payload): Json<CreateTodo>,
+    Extension(repository): Extension<Arc<T>>,
+) -> impl IntoResponse {
+    let todo = repository.create(payload);
+
+    (StatusCode::CREATED, Json(todo))
+}
+
 #[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
-struct CreateUszer {
+struct CreateUser {
     name: String,
 }
 
