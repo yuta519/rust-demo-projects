@@ -108,7 +108,7 @@ fn create_app<T: TodoRepository>(repository: T) -> Router {
     Router::new()
         .route("/", get(root))
         .route("/users", post(create_user))
-        // .route("/todos", post(create_todo::<T>))
+        .route("/todos", post(create_todo::<T>))
         .layer(Extension(Arc::new(repository)))
 }
 
@@ -126,8 +126,8 @@ async fn create_user(Json(payload): Json<CreateUser>) -> impl IntoResponse {
 }
 
 async fn create_todo<T: TodoRepository>(
-    Json(payload): Json<CreateTodo>,
     Extension(repository): Extension<Arc<T>>,
+    Json(payload): Json<CreateTodo>,
 ) -> impl IntoResponse {
     let todo = repository.create(payload);
 
