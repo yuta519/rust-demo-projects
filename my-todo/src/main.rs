@@ -162,7 +162,8 @@ mod test {
             .body(Body::empty())
             .unwrap();
 
-        let res = create_app().oneshot(req).await.unwrap();
+        let repository = InMemoryTodoRepository::new();
+        let res = create_app(repository).oneshot(req).await.unwrap();
         let bytes = axum::body::to_bytes(res.into_body(), usize::MAX)
             .await
             .unwrap();
@@ -179,7 +180,8 @@ mod test {
             .body(Body::from(r#"{"name":"Alice"}"#))
             .unwrap();
 
-        let res = create_app().oneshot(req).await.unwrap();
+        let repository = InMemoryTodoRepository::new();
+        let res = create_app(repository).oneshot(req).await.unwrap();
         let bytes = axum::body::to_bytes(res.into_body(), usize::MAX)
             .await
             .unwrap();
