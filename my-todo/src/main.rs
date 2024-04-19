@@ -107,22 +107,12 @@ async fn main() {
 fn create_app<T: TodoRepository>(repository: T) -> Router {
     Router::new()
         .route("/", get(root))
-        .route("/users", post(create_user))
         .route("/todos", post(create_todo::<T>))
         .layer(Extension(Arc::new(repository)))
 }
 
 async fn root() -> &'static str {
     "Hello, World!"
-}
-
-async fn create_user(Json(payload): Json<CreateUser>) -> impl IntoResponse {
-    let user = User {
-        id: 1337,
-        name: payload.name,
-    };
-
-    (StatusCode::CREATED, Json(user))
 }
 
 async fn create_todo<T: TodoRepository>(
@@ -169,31 +159,5 @@ mod test {
             .unwrap();
         let body = String::from_utf8(bytes.to_vec()).unwrap();
         assert_eq!(body, "Hello, World!");
-    }
-
-    #[tokio::test]
-    async fn should_return_user_data() {
-        let req = Request::builder()
-            .method(Method::POST)
-            .uri("/users")
-            .header(header::CONTENT_TYPE, mime::APPLICATION_JSON.as_ref())
-            .body(Body::from(r#"{"name":"Alice"}"#))
-            .unwrap();
-
-        let repository = InMemoryTodoRepository::new();
-        let res = create_app(repository).oneshot(req).await.unwrap();
-        let bytes = axum::body::to_bytes(res.into_body(), usize::MAX)
-            .await
-            .unwrap();
-        let body = String::from_utf8(bytes.to_vec()).unwrap();
-        let user: User = serde_json::from_str(&body).expect("Cannot convert to User Instance");
-
-        assert_eq!(
-            user,
-            User {
-                id: 1337,
-                name: "Alice".to_string(),
-            }
-        );
     }
 }
