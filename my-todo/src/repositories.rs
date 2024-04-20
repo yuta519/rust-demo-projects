@@ -49,3 +49,54 @@ impl Todo {
 }
 
 type ToDoDataset = HashMap<i32, ToDo>;
+
+#[derive(Debug, Clone)]
+pub struct InMemoryTodoRepository {
+    store: Arc<RwLock<ToDoDataset>>,
+}
+
+impl InMemoryTodoRepository {
+    pub fn new() -> Self {
+        Self {
+            store: Arc::default(),
+        }
+    }
+}
+
+impl TodoRepository for InMemoryTodoRepository {
+    fn create(&self, payload: CreateTodo) -> ToDo {
+        let mut store = self.store.write().unwrap();
+        let id = store.len() as i32 + 1;
+        let todo = ToDo::new(id, payload.text);
+        store.insert(id, todo.clone());
+        todo
+    }
+
+    fn find(&self, id: i32) -> Option<ToDo> {
+        let store = self.store.read().unwrap();
+        store.get(&id).cloned()
+    }
+
+    fn all(&self) -> Vec<ToDo> {
+        let store = self.store.read().unwrap();
+        store.values().cloned().collect()
+    }
+
+    fn update(&self, id: i32, payload: UpdateTodo) -> anyhow::Result<ToDo> {
+        let mut store = self.store.write().unwrap();
+        let todo = store.get_mut(&id).ok_or(RepositoryError::NotFound(id))?;
+        if let Some(text) = payload.text {
+            todo.text = text;
+        }
+        if let Some(completed) = payload.completed {
+            todo.completed = completed;
+        }
+        Ok(todo.clone())
+    }
+
+    fn delete(&self, id: i32) -> anyhow::Result<()> {
+        let mut store = self.store.write().unwrap();
+        store.remove(&id).ok_or(RepositoryError::NotFound(id))?;
+        Ok(())
+    }
+}
