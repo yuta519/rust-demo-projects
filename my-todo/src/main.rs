@@ -6,7 +6,6 @@ use axum::{
     routing::{get, post},
     Router,
 };
-use serde::{Deserialize, Serialize};
 use std::{env, sync::Arc};
 
 use handlers::create_todo;
@@ -36,17 +35,6 @@ fn create_app<T: TodoRepository>(repository: T) -> Router {
 
 async fn root() -> &'static str {
     "Hello, World!"
-}
-
-#[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
-struct CreateUser {
-    name: String,
-}
-
-#[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
-struct User {
-    id: u64,
-    name: String,
 }
 
 #[cfg(test)]
