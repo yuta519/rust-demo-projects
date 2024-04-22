@@ -1,93 +1,16 @@
+mod handlers;
+mod repositories;
+
 use axum::{
     extract::Extension,
-    http::StatusCode,
-    response::IntoResponse,
     routing::{get, post},
-    Json, Router,
+    Router,
 };
 use serde::{Deserialize, Serialize};
-use std::{
-    collections::HashMap,
-    env,
-    sync::{Arc, RwLock},
-};
-use thiserror::Error;
+use std::{env, sync::Arc};
 
-#[derive(Debug, Error)]
-enum RepositoryError {
-    #[error("User not found: {0}")]
-    NotFound(i32),
-}
-
-pub trait TodoRepository: Clone + std::marker::Send + std::marker::Sync + 'static {
-    fn create(&self, payload: CreateTodo) -> ToDo;
-    fn find(&self, id: i32) -> Option<ToDo>;
-    fn all(&self, todo: ToDo) -> Vec<ToDo>;
-    fn update(&self, id: i32) -> anyhow::Result<ToDo>;
-    fn delete(&self, id: i32) -> anyhow::Result<()>;
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
-pub struct ToDo {
-    id: i32,
-    text: String,
-    completed: bool,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
-pub struct CreateTodo {
-    text: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
-pub struct UpdateTodo {
-    text: Option<String>,
-    completed: Option<bool>,
-}
-
-impl ToDo {
-    pub fn new(id: i32, text: String) -> Self {
-        Self {
-            id,
-            text,
-            completed: false,
-        }
-    }
-}
-
-type ToDoDataset = HashMap<i32, ToDo>;
-
-#[derive(Debug, Clone)]
-
-pub struct InMemoryTodoRepository {
-    store: Arc<RwLock<ToDoDataset>>,
-}
-
-impl InMemoryTodoRepository {
-    pub fn new() -> Self {
-        InMemoryTodoRepository {
-            store: Arc::new(RwLock::new(HashMap::new())),
-        }
-    }
-}
-
-impl TodoRepository for InMemoryTodoRepository {
-    fn all(&self, todo: ToDo) -> Vec<ToDo> {
-        todo!()
-    }
-    fn create(&self, payload: CreateTodo) -> ToDo {
-        todo!()
-    }
-    fn delete(&self, id: i32) -> anyhow::Result<()> {
-        todo!()
-    }
-    fn find(&self, id: i32) -> Option<ToDo> {
-        todo!()
-    }
-    fn update(&self, id: i32) -> anyhow::Result<ToDo> {
-        todo!()
-    }
-}
+use handlers::create_todo;
+use repositories::{InMemoryTodoRepository, TodoRepository};
 
 #[tokio::main]
 async fn main() {
@@ -97,7 +20,7 @@ async fn main() {
 
     let repository = InMemoryTodoRepository::new();
     let app = create_app(repository);
-    let address = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let address = tokio::net::TcpListener::bind("0.0.0.0:3001").await.unwrap();
 
     tracing::debug!("Listening on: {}", address.local_addr().unwrap());
 
@@ -113,15 +36,6 @@ fn create_app<T: TodoRepository>(repository: T) -> Router {
 
 async fn root() -> &'static str {
     "Hello, World!"
-}
-
-async fn create_todo<T: TodoRepository>(
-    Extension(repository): Extension<Arc<T>>,
-    Json(payload): Json<CreateTodo>,
-) -> impl IntoResponse {
-    let todo = repository.create(payload);
-
-    (StatusCode::CREATED, Json(todo))
 }
 
 #[derive(Deserialize, Serialize, Debug, PartialEq, Eq)]
@@ -140,7 +54,7 @@ mod test {
     use super::*;
     use axum::{
         body::Body,
-        http::{header, Method, Request},
+        http::{Method, Request},
     };
     use tower::ServiceExt;
 
