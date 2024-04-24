@@ -61,6 +61,12 @@ impl InMemoryTodoRepository {
             store: Arc::default(),
         }
     }
+    fn write_store_ref(&self) -> RwLockWriteGuard<ToDoDataset> {
+        self.store.write().unwrap()
+    }
+    fn read_store_ref(&self) -> RwLockReadGuard<ToDoDataset> {
+        self.store.read().unwrap()
+    }
 }
 
 impl TodoRepository for InMemoryTodoRepository {
