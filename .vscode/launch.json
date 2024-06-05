@@ -5,6 +5,7 @@
             "type": "lldb",
             "request": "launch",
             "name": "Debug",
+            // "program": "${workspaceFolder}/my-todo//target/debug/${workspaceFolderBasename}",
             "program": "${workspaceFolder}/my-todo//target/debug/my-todo",
             "args": [],
             "cwd": "${workspaceFolder}"

@@ -69,6 +69,25 @@ impl InMemoryTodoRepository {
     fn read_store_ref(&self) -> RwLockReadGuard<ToDoDataset> {
         self.store.read().unwrap()
     }
+
+    fn create(&self, payload: CreateTodo) -> Todo {
+        let mut store = self.write_store_ref();
+        let id = (store.len() + 1) as i32;
+        let todo = Todo::new(id, payload.text);
+        store.insert(id, todo.clone());
+        todo
+    }
+
+    fn find(&self, id: i32) -> Option<Todo> {
+        let store = self.read_store_ref();
+        store.get(&id).map(|todo| todo.clone())
+    }
+
+    fn all(&self) -> Vec<Todo> {
+        let store = self.read_store_ref();
+        // store.values().cloned().collect()
+        Vec::from_iter(store.values().map(|todo| todo.clone()))
+    }
 }
 
 impl TodoRepository for InMemoryTodoRepository {
