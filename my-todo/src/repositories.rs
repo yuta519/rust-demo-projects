@@ -85,7 +85,6 @@ impl InMemoryTodoRepository {
 
     fn all(&self) -> Vec<Todo> {
         let store = self.read_store_ref();
-        // store.values().cloned().collect()
         Vec::from_iter(store.values().map(|todo| todo.clone()))
     }
 }
